@@ -31,9 +31,6 @@ static lv_disp_draw_buf_t draw_buf;
 static lv_color_t *disp_draw_buf;
 static lv_disp_drv_t disp_drv;
 
-unsigned long previousMillis = 0;
-const long interval = 2000;
-
 /* Display flushing */
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
   uint32_t w = (area->x2 - area->x1 + 1);
@@ -63,6 +60,11 @@ void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
     data->state = LV_INDEV_STATE_REL;
   }
 }
+
+unsigned long previousMillis = 0;
+const long interval = 5000;
+int fanBladeAngle = 0;
+
 HardwareSerial Receiver(0);
 
 #define Receiver_Txd_pin 17
@@ -132,42 +134,43 @@ void setup() {
     Serial.println("Setup done");
     ui_init();
   }
+}
 
-  void loop() {
-    lv_timer_handler(); /* let the GUI do its work */
-    delay(5);
-  }
+void loop() {
+  lv_timer_handler(); /* let the GUI do its work */
+  delay(5);
+}
 
-  void serialEvent() {
-    if (Receiver.available()) {  // Wait for the Receiver to get the characters
-                                 //   float received_temperature = Receiver.parseFloat();  // Display the Receivers characters
-      // Serial.println(received_temperature);                // Display the result on the serial monitor
-      String incoming = "";
-      while (Receiver.available()) {
-        incoming += (char)Receiver.read();
-      }
-      temperatureData = getValue(incoming, ';', 1).toFloat();
-      moistureData = getValue(incoming, ';', 2).toInt();
-      fertilityData = getValue(incoming, ';', 3).toInt();
-      lightData = getValue(incoming, ';', 4).toInt();
-      batteryData = getValue(incoming, ';', 5).toFloat();
+void serialEvent() {
+  if (Receiver.available()) {  // Wait for the Receiver to get the characters
+                               //   float received_temperature = Receiver.parseFloat();  // Display the Receivers characters
+    // Serial.println(received_temperature);                // Display the result on the serial monitor
+    String incoming = "";
+    while (Receiver.available()) {
+      incoming += (char)Receiver.read();
+    }
+    temperatureData = getValue(incoming, ';', 1).toFloat();
+    moistureData = getValue(incoming, ';', 2).toInt();
+    fertilityData = getValue(incoming, ';', 3).toInt();
+    lightData = getValue(incoming, ';', 4).toInt();
+    batteryData = getValue(incoming, ';', 5).toFloat();
 
-      Serial.print("temperature : ");
-      Serial.print(temperatureData);
-      Serial.println("°C ");
-      Serial.print("fertility : ");
-      Serial.print(fertilityData);
-      Serial.println(" us/cm ");
-      Serial.print("moisture : ");
-      Serial.print(moistureData);
-      Serial.println(" %H ");
-      Serial.print("light : ");
-      Serial.print(lightData);
-      Serial.println(" lux ");
-      Serial.print("battery : ");
-      Serial.print(batteryData);
-      Serial.println(" Volt ");
-      Serial.println("recieve data from sensor success\n");
-      // Serial.println(incoming);  // Display the result on the serial monitor
-    };
-  }
+    Serial.print("temperature : ");
+    Serial.print(temperatureData);
+    Serial.println("°C ");
+    Serial.print("fertility : ");
+    Serial.print(fertilityData);
+    Serial.println(" us/cm ");
+    Serial.print("moisture : ");
+    Serial.print(moistureData);
+    Serial.println(" %H ");
+    Serial.print("light : ");
+    Serial.print(lightData);
+    Serial.println(" lux ");
+    Serial.print("battery : ");
+    Serial.print(batteryData);
+    Serial.println(" Volt ");
+    Serial.println("recieve data from sensor success\n");
+    // Serial.println(incoming);  // Display the result on the serial monitor
+  };
+}
