@@ -66,13 +66,17 @@ extern lv_obj_t * ui_Stat1;
 extern lv_obj_t * ui_LightIMG;
 void ui_event_FanIcon(lv_event_t * e);
 extern lv_obj_t * ui_FanIcon;
+extern lv_obj_t * ui_Stat;
 extern lv_obj_t * ui_FanIMG;
 extern lv_obj_t * ui_FanStatTitle;
-extern lv_obj_t * ui_Stat;
 extern lv_obj_t * ui_AppBar1;
 extern lv_obj_t * ui_Time1;
 extern lv_obj_t * ui_Screen2_Title;
 extern lv_obj_t * ui_Wifi_Signel1;
+extern lv_obj_t * ui_Button2;
+extern lv_obj_t * ui_FanStatTitle1;
+extern lv_obj_t * ui_FanIMG1;
+extern lv_obj_t * ui_Stat3;
 
 
 LV_IMG_DECLARE(ui_img_watering2_png);    // assets\watering2.png
