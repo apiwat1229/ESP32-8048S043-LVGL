@@ -62,8 +62,7 @@ void my_touchpad_read(lv_indev_drv_t *indev_driver, lv_indev_data_t *data) {
 }
 
 unsigned long previousMillis = 0;
-const long interval = 5000;
-int fanBladeAngle = 0;
+const long interval = 1000;
 
 HardwareSerial Receiver(0);
 
@@ -154,6 +153,11 @@ void serialEvent() {
     fertilityData = getValue(incoming, ';', 3).toInt();
     lightData = getValue(incoming, ';', 4).toInt();
     batteryData = getValue(incoming, ';', 5).toFloat();
+
+    lv_label_set_text(ui_MoistureData, String(moistureData).c_str());
+    lv_label_set_text(ui_SunLightData, String(lightData).c_str());
+    lv_label_set_text(ui_SoilTemp, String(temperatureData).c_str());
+    lv_label_set_text(ui_FertilityData, String(fertilityData).c_str());
 
     Serial.print("temperature : ");
     Serial.print(temperatureData);
